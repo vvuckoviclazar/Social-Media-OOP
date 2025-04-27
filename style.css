@@ -8,3 +8,48 @@
 html {
   font-size: 6.25%;
 }
+
+body {
+  font-family: sans-serif;
+  padding-top: 5rem;
+}
+
+.search-loop {
+  width: 20rem;
+}
+
+.img {
+  width: 200rem;
+  border-radius: 50%;
+  width: 55rem;
+  height: 50rem;
+  font-weight: bold;
+  object-fit: cover;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 15rem;
+  padding-right: 15rem;
+  border-bottom: 1rem solid rgb(161, 151, 184);
+  padding-bottom: 5rem;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: rgb(222, 211, 242);
+  height: 25%;
+  margin-top: 15rem;
+  padding: 3rem 23rem 3rem 9rem;
+  border-radius: 30rem;
+  gap: 5rem;
+}
+
+.find-friends {
+  background-color: transparent;
+  border: none;
+  font-size: 17rem;
+  color: black;
+}
