@@ -7,7 +7,6 @@
     <title>Social-Media-OOP</title>
   </head>
   <body>
-    <script src="script.js"></script>
     <header>
       <div class="search-bar">
         <svg
@@ -25,8 +24,34 @@
 
         <input type="text" placeholder="Find friends" class="find-friends" />
       </div>
+
       <div class="picture-div"><img src="avatar-image2.jpg" class="img" /></div>
     </header>
-    <div class="introduce-div"></div>
+    <div class="search-suggestions" hidden></div>
+    <div class="introduce-div">
+      <div class="background-picture-div">
+        <img class="background-image" src="background-image.jpg" />
+      </div>
+      <div class="name-div">
+        <h1>Dario Jularic</h1>
+        <p>Zagreb, Croatia</p>
+      </div>
+      <img class="img2" src="avatar-image2.jpg" />
+    </div>
+    <div class="write-div">
+      <input type="text" placeholder="Write a post" class="write-post" />
+      <button class="add-post">Add post</button>
+    </div>
+    <div class="friends-and-posts">
+      <div class="friends-div">
+        <div class="width-div">
+          <h1 class="friends-h1">Friends</h1>
+          <p>6 friends</p>
+          <div class="friends-list"></div>
+        </div>
+      </div>
+      <div class="friends-lists"></div>
+    </div>
+    <script src="script.js"></script>
   </body>
 </html>
