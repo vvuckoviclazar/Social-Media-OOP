@@ -6,10 +6,10 @@ const suggestionsBox = document.querySelector(".search-suggestions");
 
 const friends = [
   { name: "Emily Johnson", picture: "profile1.jpg" },
-  { name: "Michael Smith", picture: "profile2.jpg" },
-  { name: "Sophia Williams", picture: "profile3.jpg" },
+  { name: "Jason Smith", picture: "profile2.jpg" },
+  { name: "Stephan Williams", picture: "profile3.jpg" },
   { name: "James Brown", picture: "profile4.jpg" },
-  { name: "Olivia Jones", picture: "profile5.jpg" },
+  { name: "Oliveira Jones", picture: "profile5.jpg" },
   { name: "Daniel Miller", picture: "profile6.jpg" },
 ];
 
@@ -93,3 +93,7 @@ searchInput.addEventListener("input", (e) => {
     suggestionsBox.hidden = true;
   }
 });
+
+// NAPRAVI USER KLASU
+// MAKNI FRIENDSMANAGER KLASU
+// NAPRAVI DA SE MOZE DODATI POST

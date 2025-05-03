@@ -38,6 +38,7 @@ body {
 }
 
 header {
+  position: relative;
   display: flex;
   justify-content: space-between;
   padding-left: 15rem;
@@ -178,34 +179,38 @@ p {
 
 .search-suggestions {
   background-color: white;
-  border: 1px solid #ccc;
-  width: 100%;
-  max-height: 25rem;
-  overflow-y: auto;
   border-radius: 0.5rem;
-  margin-top: 1rem;
-  padding: 1rem;
+  position: absolute;
+  top: 103%;
+  z-index: 5;
+  border-radius: 10rem;
 }
 
 .suggestion-item {
-  padding: 0.8rem;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 5rem;
+  z-index: 5;
+  width: 100%;
+  padding: 7rem;
+  border-radius: 10rem;
+  margin-bottom: 3rem;
 }
 
 .suggestion-item:hover {
-  background-color: #f0f0f0;
+  background-color: rgb(248, 227, 243);
 }
 
 .suggestion-img {
-  width: 30px;
-  height: 30px;
+  width: 58rem;
+  height: 58rem;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .suggestion-name {
-  font-size: 14rem;
+  font-size: 23rem;
+  z-index: 5;
+  font-weight: 300;
 }
