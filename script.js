@@ -3,6 +3,9 @@
 const friendsList = document.querySelector(".friends-list");
 const searchInput = document.querySelector(".find-friends");
 const suggestionsBox = document.querySelector(".search-suggestions");
+const postInput = document.querySelector(".write-post");
+const addPostBtn = document.querySelector(".add-post");
+const postList = document.querySelector(".post-list");
 
 const friends = [
   { name: "Emily Johnson", picture: "profile1.jpg" },
@@ -13,10 +16,22 @@ const friends = [
   { name: "Daniel Miller", picture: "profile6.jpg" },
 ];
 
-class Friend {
-  constructor(name, picture) {
+const userAccount = [
+  {
+    owner: "Dario Jularic",
+    place: "Zagreb, Croatia",
+    picture: "avatar-image2.jpg",
+    posts: [],
+  },
+];
+
+class User {
+  constructor(name = "", picture = "", place = "") {
     this.name = name;
     this.picture = picture;
+    this.place = place;
+    this.myFriends = [];
+    this.posts = [];
   }
 
   getName() {
@@ -25,12 +40,6 @@ class Friend {
 
   getPicture() {
     return this.picture;
-  }
-}
-
-class FriendsManager {
-  constructor() {
-    this.myFriends = [];
   }
 
   addFriend(friend) {
@@ -59,20 +68,33 @@ class FriendsManager {
       friend.getName().toLowerCase().startsWith(query.toLowerCase())
     );
   }
+
+  displayUserInfo() {
+    const nameDiv = document.querySelector(".name-div h1");
+    const placePara = document.querySelector(".name-div p");
+    const profileImg = document.querySelector(".img2");
+
+    nameDiv.textContent = this.name;
+    placePara.textContent = this.place;
+    profileImg.src = this.picture;
+  }
 }
 
-const manager = new FriendsManager();
+const account = userAccount[0];
+const currentUser = new User(account.owner, account.picture, account.place);
+
+currentUser.displayUserInfo();
 
 friends.forEach((data) => {
-  const newFriend = new Friend(data.name, data.picture);
-  manager.addFriend(newFriend);
+  const newFriend = new User(data.name, data.picture);
+  currentUser.addFriend(newFriend);
 });
 
-manager.renderAllFriends();
+currentUser.renderAllFriends();
 
 searchInput.addEventListener("input", (e) => {
   const query = e.target.value.trim();
-  const matches = manager.searchFriends(query);
+  const matches = currentUser.searchFriends(query);
 
   suggestionsBox.innerHTML = "";
 
@@ -94,6 +116,32 @@ searchInput.addEventListener("input", (e) => {
   }
 });
 
-// NAPRAVI USER KLASU
-// MAKNI FRIENDSMANAGER KLASU
-// NAPRAVI DA SE MOZE DODATI POST
+addPostBtn.addEventListener("click", () => {
+  const postText = postInput.value.trim();
+
+  if (postText === "") return;
+
+  currentUser.posts.push(postText);
+
+  const li = document.createElement("li");
+
+  li.innerHTML = `
+    <div class="userName-div">
+      <img class="post-img" src="${currentUser.picture}" />
+      <h1 class="post-h1">${currentUser.name}</h1>
+    </div>
+    <h2 class="post-text">${postText}</h2>
+    <div class="post-buttons-div">
+      <button class="like">Like</button>
+      <button class="comment">Comment</button>
+    </div>
+    <div class="comment-section">
+      <img class="post-img" src="${currentUser.picture}" />
+      <input type="text" class="comment-input" placeholder="Write a comment" />
+      <button class="add-comment-btn">Add comment</button> 
+    </div>
+  `;
+
+  postList.prepend(li);
+  postInput.value = "";
+});
