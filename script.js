@@ -21,7 +21,6 @@ const userAccount = [
     owner: "Dario Jularic",
     place: "Zagreb, Croatia",
     picture: "avatar-image2.jpg",
-    posts: [],
   },
 ];
 
@@ -80,6 +79,10 @@ class User {
   }
 }
 
+class Like {}
+
+class Comment {}
+
 const account = userAccount[0];
 const currentUser = new User(account.owner, account.picture, account.place);
 
@@ -116,6 +119,7 @@ searchInput.addEventListener("input", (e) => {
   }
 });
 
+// neka oko inputa za dodavanje posta bude forma a ovde neka bude submit
 addPostBtn.addEventListener("click", () => {
   const postText = postInput.value.trim();
 
@@ -125,6 +129,12 @@ addPostBtn.addEventListener("click", () => {
 
   const li = document.createElement("li");
 
+  //imas klasu user to je glavna klasa tj instanca te klase (currentUser) sadrzava sve ostalo
+  //razmisli:
+  //kad dodam novi post sta se desi? koja polja treba da ima svaki post?
+  //u kojem arrayu treba da zive ti postovi? tj ko upravlja postovima
+  //dobro i detaljno pogledaj od cega se sadrze postovi
+  //koje informacije sacinjavaju post
   li.innerHTML = `
     <div class="userName-div">
       <img class="post-img" src="${currentUser.picture}" />
