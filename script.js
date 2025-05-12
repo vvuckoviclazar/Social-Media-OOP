@@ -4,8 +4,8 @@ const friendsList = document.querySelector(".friends-list");
 const searchInput = document.querySelector(".find-friends");
 const suggestionsBox = document.querySelector(".search-suggestions");
 const postInput = document.querySelector(".write-post");
-const addPostBtn = document.querySelector(".add-post");
 const postList = document.querySelector(".post-list");
+const newPostForm = document.querySelector(".write-form");
 
 const friends = [
   { name: "Emily Johnson", picture: "profile1.jpg" },
@@ -120,7 +120,9 @@ searchInput.addEventListener("input", (e) => {
 });
 
 // neka oko inputa za dodavanje posta bude forma a ovde neka bude submit
-addPostBtn.addEventListener("click", () => {
+newPostForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
   const postText = postInput.value.trim();
 
   if (postText === "") return;
