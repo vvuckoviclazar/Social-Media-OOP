@@ -286,3 +286,48 @@ li {
   padding: 5rem 10rem 5rem 10rem;
   font-weight: bold;
 }
+
+.liked {
+  background-color: pink;
+}
+
+.comment-user {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+}
+
+.comment-name {
+  font-size: 18rem;
+  font-weight: bold;
+  margin-bottom: 3rem;
+}
+
+.comment-style {
+  display: flex;
+  align-items: baseline;
+  flex-direction: column;
+}
+
+.comment-text {
+  font-size: 18rem;
+  font-weight: 200;
+  background-color: rgb(222, 211, 242);
+  padding: 4rem 12rem 4rem 12rem;
+  border-radius: 14rem;
+}
+
+.single-comment {
+  margin-bottom: 0rem;
+  padding: 10rem 5rem 10rem 15rem;
+}
+
+.comment-count {
+  text-align: end;
+}
+
+.like-comment-div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 5rem;
+}
