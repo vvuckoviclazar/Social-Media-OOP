@@ -15,6 +15,10 @@ const userAccount = {
 
 const account = userAccount;
 
+class Like {}
+
+class Comment {}
+
 class Post {
   constructor(author, text) {
     this.author = author;
