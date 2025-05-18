@@ -328,6 +328,6 @@ li {
 
 .like-comment-div {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.7fr 0.3fr;
   margin-bottom: 5rem;
 }

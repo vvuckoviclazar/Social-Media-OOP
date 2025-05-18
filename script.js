@@ -15,9 +15,18 @@ const userAccount = {
 
 const account = userAccount;
 
-class Like {}
+class Like {
+  constructor(user) {
+    this.user = user;
+  }
+}
 
-class Comment {}
+class Comment {
+  constructor(user, text) {
+    this.user = user;
+    this.text = text;
+  }
+}
 
 class Post {
   constructor(author, text) {
@@ -25,21 +34,23 @@ class Post {
     this.text = text;
     this.likes = [];
     this.comments = [];
-    this.isLiked = false;
   }
 
   toggleLike(user) {
-    if (!this.isLiked) {
-      this.likes.push(user);
-      this.isLiked = true;
+    const existing = this.likes.find((like) => like.user === user);
+    if (existing) {
+      this.likes = this.likes.filter((like) => like.user !== user);
     } else {
-      this.likes = this.likes.filter((u) => u !== user);
-      this.isLiked = false;
+      this.likes.push(new Like(user));
     }
   }
 
-  addComment(text) {
-    this.comments.push({ user: currentUser, text });
+  get isLikedByCurrentUser() {
+    return this.likes.some((like) => like.user === currentUser);
+  }
+
+  addComment(user, text) {
+    this.comments.push(new Comment(user, text));
   }
 }
 
@@ -67,12 +78,10 @@ class User {
   renderFriend(friend) {
     const friendCard = document.createElement("div");
     friendCard.classList.add("friend-card");
-
     friendCard.innerHTML = `
       <img src="${friend.getPicture()}" alt="${friend.getName()}" class="friend-img" />
       <p class="friend-name">${friend.getName()}</p>
     `;
-
     friendsList.appendChild(friendCard);
   }
 
@@ -107,7 +116,6 @@ class User {
 function renderPost(post, index) {
   const li = document.createElement("li");
   li.dataset.postId = index;
-
   li.innerHTML = `
     <div class="userName-div">
       <img class="post-img" src="${post.author.picture}" />
@@ -129,7 +137,6 @@ function renderPost(post, index) {
     </div>
     <ul class="comment-list"></ul>
   `;
-
   return li;
 }
 
@@ -151,11 +158,98 @@ friends.forEach((data) => {
 });
 currentUser.renderAllFriends();
 
+const fixedPosts = [
+  {
+    text: "This platform is all about thoughtful reflections.",
+    likes: [{ name: "James Brown", image: "profile4.jpg" }],
+    comments: [
+      {
+        profile: "James Brown",
+        text: "Makes me ponder on the importance of staying true to one's moral compass.",
+        image: "profile4.jpg",
+      },
+      {
+        profile: "Oliveira Jones",
+        text: "Sometimes the best option is to stick to your principles.",
+        image: "profile5.jpg",
+      },
+    ],
+  },
+  {
+    text: "The world doesn't need more noise. It needs more meaning.",
+    likes: [{ name: "Daniel Miller", image: "profile6.jpg" }],
+    comments: [
+      {
+        profile: "Daniel Miller",
+        text: "Couldn't agree more.",
+        image: "profile6.jpg",
+      },
+    ],
+  },
+];
+
+fixedPosts.forEach((data) => {
+  const post = new Post(currentUser, data.text);
+
+  if (data.likes) {
+    data.likes.forEach((l) => {
+      const liker = new User(l.name, l.image, "");
+      post.likes.push(new Like(liker));
+    });
+  }
+
+  data.comments.forEach((c) => {
+    const commenter = new User(c.profile, c.image, "");
+    post.comments.push(new Comment(commenter, c.text));
+  });
+
+  currentUser.posts.push(post);
+  const li = renderPost(post, currentUser.posts.length - 1);
+
+  const likedText = li.querySelector(".liked-by-text");
+  const likeBtn = li.querySelector(".like-btn");
+
+  if (post.isLikedByCurrentUser) {
+    likeBtn.classList.add("liked");
+  }
+  if (post.likes.length > 0) {
+    if (post.isLikedByCurrentUser) {
+      const others = post.likes.filter((like) => like.user !== currentUser);
+      likedText.textContent =
+        others.length > 0
+          ? `${currentUser.name} and ${others[0].user.name} liked this post.`
+          : `${currentUser.name} liked this post.`;
+    } else {
+      likedText.textContent = `${post.likes[0].user.name} liked this post.`;
+    }
+  }
+
+  const commentList = li.querySelector(".comment-list");
+  const commentCount = li.querySelector(".comment-count");
+  post.comments.forEach((comment) => {
+    const newComment = document.createElement("li");
+    newComment.classList.add("single-comment");
+    newComment.innerHTML = `
+      <div class="comment-user">
+        <img class="post-img" src="${comment.user.picture}" />
+        <div class="comment-style">
+          <span class="comment-name">${comment.user.name}</span>
+          <span class="comment-text">${comment.text}</span>
+        </div>
+      </div>
+    `;
+    commentList.appendChild(newComment);
+  });
+  commentCount.textContent = `${post.comments.length} comment${
+    post.comments.length === 1 ? "" : "s"
+  }`;
+  postList.appendChild(li);
+});
+
 searchInput.addEventListener("input", (e) => {
   const query = e.target.value.trim();
   const matches = currentUser.searchFriends(query);
   suggestionsBox.innerHTML = "";
-
   if (query !== "" && matches.length > 0) {
     matches.forEach((friend) => {
       const item = document.createElement("div");
@@ -193,11 +287,24 @@ postList.addEventListener("click", function (e) {
     post.toggleLike(currentUser);
     const likeBtn = li.querySelector(".like-btn");
     const likedText = li.querySelector(".liked-by-text");
-    if (post.isLiked) {
+
+    if (post.isLikedByCurrentUser) {
       likeBtn.classList.add("liked");
-      likedText.textContent = `${currentUser.name} liked this post.`;
     } else {
       likeBtn.classList.remove("liked");
+    }
+
+    if (post.likes.length > 0) {
+      if (post.isLikedByCurrentUser) {
+        const others = post.likes.filter((like) => like.user !== currentUser);
+        likedText.textContent =
+          others.length > 0
+            ? `${currentUser.name} and ${others[0].user.name} liked this post.`
+            : `${currentUser.name} liked this post.`;
+      } else {
+        likedText.textContent = `${post.likes[0].user.name} liked this post.`;
+      }
+    } else {
       likedText.textContent = "";
     }
   }
@@ -206,7 +313,8 @@ postList.addEventListener("click", function (e) {
     const input = li.querySelector(".comment-input");
     const text = input.value.trim();
     if (text === "") return;
-    post.addComment(text);
+
+    post.addComment(currentUser, text);
     input.value = "";
 
     const commentList = li.querySelector(".comment-list");
