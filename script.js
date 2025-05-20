@@ -17,8 +17,14 @@ function renderPost(post, index) {
   li.dataset.postId = index;
   li.innerHTML = `
     <div class="userName-div">
-      <img class="post-img" src="${post.author.picture}" />
-      <h1 class="post-h1">${post.author.name}</h1>
+     <div class="left-mini-div">
+       <img class="post-img" src="${post.author.picture}" />
+       <h1 class="post-h1">${post.author.name}</h1>
+      </div>
+      <div class="right-mini-div">
+      <button class="edit-post-btn">edit</button>
+      <button class="delete-post-btn">delete</button>
+      </div>
     </div>
     <h2 class="post-text">${post.text}</h2>
     <div class="like-comment-div">
