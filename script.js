@@ -8,106 +8,9 @@ const postList = document.querySelector(".post-list");
 const newPostForm = document.querySelector(".write-form");
 
 import { userAccount, friends, fixedPosts } from "./data.js";
+import { Like, Comment, Post, User } from "./classes.js";
 
 const account = userAccount;
-
-class Like {
-  constructor(user) {
-    this.user = user;
-  }
-}
-
-class Comment {
-  constructor(user, text) {
-    this.user = user;
-    this.text = text;
-  }
-}
-
-class Post {
-  constructor(author, text) {
-    this.author = author;
-    this.text = text;
-    this.likes = [];
-    this.comments = [];
-  }
-
-  toggleLike(user) {
-    const existing = this.likes.find((like) => like.user === user);
-    if (existing) {
-      this.likes = this.likes.filter((like) => like.user !== user);
-    } else {
-      this.likes.push(new Like(user));
-    }
-  }
-
-  get isLikedByCurrentUser() {
-    return this.likes.some((like) => like.user === currentUser);
-  }
-
-  addComment(user, text) {
-    this.comments.push(new Comment(user, text));
-  }
-}
-
-class User {
-  constructor(name = "", picture = "", place = "") {
-    this.name = name;
-    this.picture = picture;
-    this.place = place;
-    this.myFriends = [];
-    this.posts = [];
-  }
-
-  getName() {
-    return this.name;
-  }
-
-  getPicture() {
-    return this.picture;
-  }
-
-  addFriend(friend) {
-    this.myFriends.push(friend);
-  }
-
-  renderFriend(friend) {
-    const friendCard = document.createElement("div");
-    friendCard.classList.add("friend-card");
-    friendCard.innerHTML = `
-      <img src="${friend.getPicture()}" alt="${friend.getName()}" class="friend-img" />
-      <p class="friend-name">${friend.getName()}</p>
-    `;
-    friendsList.appendChild(friendCard);
-  }
-
-  renderAllFriends() {
-    friendsList.innerHTML = "";
-    this.myFriends.forEach((friend) => this.renderFriend(friend));
-  }
-
-  searchFriends(query) {
-    return this.myFriends.filter((friend) =>
-      friend.getName().toLowerCase().startsWith(query.toLowerCase())
-    );
-  }
-
-  displayUserInfo() {
-    const nameDiv = document.querySelector(".name-div h1");
-    const placePara = document.querySelector(".name-div p");
-    const profileImg = document.querySelector(".img2");
-
-    nameDiv.textContent = this.name;
-    placePara.textContent = this.place;
-    profileImg.src = this.picture;
-  }
-
-  addPost(text) {
-    const post = new Post(this, text);
-    this.posts.push(post);
-    return post;
-  }
-}
 
 function renderPost(post, index) {
   const li = document.createElement("li");
@@ -143,7 +46,7 @@ friends.forEach((data) => {
   const newFriend = new User(data.name, data.picture);
   currentUser.addFriend(newFriend);
 });
-currentUser.renderAllFriends();
+currentUser.renderAllFriends(friendsList);
 
 fixedPosts.forEach((data) => {
   const post = new Post(currentUser, data.text);
@@ -166,11 +69,12 @@ fixedPosts.forEach((data) => {
   const likedText = li.querySelector(".liked-by-text");
   const likeBtn = li.querySelector(".like-btn");
 
-  if (post.isLikedByCurrentUser) {
+  if (post.isLikedBy(currentUser)) {
     likeBtn.classList.add("liked");
   }
+
   if (post.likes.length > 0) {
-    if (post.isLikedByCurrentUser) {
+    if (post.isLikedBy(currentUser)) {
       const others = post.likes.filter((like) => like.user !== currentUser);
       likedText.textContent =
         others.length > 0
@@ -197,9 +101,11 @@ fixedPosts.forEach((data) => {
     `;
     commentList.appendChild(newComment);
   });
+
   commentCount.textContent = `${post.comments.length} comment${
     post.comments.length === 1 ? "" : "s"
   }`;
+
   postList.appendChild(li);
 });
 
@@ -245,14 +151,14 @@ postList.addEventListener("click", function (e) {
     const likeBtn = li.querySelector(".like-btn");
     const likedText = li.querySelector(".liked-by-text");
 
-    if (post.isLikedByCurrentUser) {
+    if (post.isLikedBy(currentUser)) {
       likeBtn.classList.add("liked");
     } else {
       likeBtn.classList.remove("liked");
     }
 
     if (post.likes.length > 0) {
-      if (post.isLikedByCurrentUser) {
+      if (post.isLikedBy(currentUser)) {
         const others = post.likes.filter((like) => like.user !== currentUser);
         likedText.textContent =
           others.length > 0
