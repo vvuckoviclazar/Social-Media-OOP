@@ -12,6 +12,49 @@ import { Like, Comment, Post, User } from "./classes.js";
 
 const account = userAccount;
 
+function setupRenderedPost(post, li) {
+  const likeBtn = li.querySelector(".like-btn");
+  const likedText = li.querySelector(".liked-by-text");
+
+  if (post.isLikedBy(currentUser)) {
+    likeBtn.classList.add("liked");
+  }
+
+  if (post.likes.length > 0) {
+    if (post.isLikedBy(currentUser)) {
+      const others = post.likes.filter((like) => like.user !== currentUser);
+      likedText.textContent =
+        others.length > 0
+          ? `${currentUser.name} and ${others[0].user.name} liked this post.`
+          : `${currentUser.name} liked this post.`;
+    } else {
+      likedText.textContent = `${post.likes[0].user.name} liked this post.`;
+    }
+  }
+
+  const commentList = li.querySelector(".comment-list");
+  const commentCount = li.querySelector(".comment-count");
+
+  post.comments.forEach((comment) => {
+    const newComment = document.createElement("li");
+    newComment.classList.add("single-comment");
+    newComment.innerHTML = `
+      <div class="comment-user">
+        <img class="post-img" src="${comment.user.picture}" />
+        <div class="comment-style">
+          <span class="comment-name">${comment.user.name}</span>
+          <span class="comment-text">${comment.text}</span>
+        </div>
+      </div>
+    `;
+    commentList.appendChild(newComment);
+  });
+
+  commentCount.textContent = `${post.comments.length} comment${
+    post.comments.length === 1 ? "" : "s"
+  }`;
+}
+
 function renderPost(post, index) {
   const li = document.createElement("li");
   li.dataset.postId = index;
@@ -72,45 +115,7 @@ fixedPosts.forEach((data) => {
   currentUser.posts.push(post);
   const li = renderPost(post, currentUser.posts.length - 1);
 
-  const likedText = li.querySelector(".liked-by-text");
-  const likeBtn = li.querySelector(".like-btn");
-
-  if (post.isLikedBy(currentUser)) {
-    likeBtn.classList.add("liked");
-  }
-
-  if (post.likes.length > 0) {
-    if (post.isLikedBy(currentUser)) {
-      const others = post.likes.filter((like) => like.user !== currentUser);
-      likedText.textContent =
-        others.length > 0
-          ? `${currentUser.name} and ${others[0].user.name} liked this post.`
-          : `${currentUser.name} liked this post.`;
-    } else {
-      likedText.textContent = `${post.likes[0].user.name} liked this post.`;
-    }
-  }
-
-  const commentList = li.querySelector(".comment-list");
-  const commentCount = li.querySelector(".comment-count");
-  post.comments.forEach((comment) => {
-    const newComment = document.createElement("li");
-    newComment.classList.add("single-comment");
-    newComment.innerHTML = `
-      <div class="comment-user">
-        <img class="post-img" src="${comment.user.picture}" />
-        <div class="comment-style">
-          <span class="comment-name">${comment.user.name}</span>
-          <span class="comment-text">${comment.text}</span>
-        </div>
-      </div>
-    `;
-    commentList.appendChild(newComment);
-  });
-
-  commentCount.textContent = `${post.comments.length} comment${
-    post.comments.length === 1 ? "" : "s"
-  }`;
+  setupRenderedPost(post, li);
 
   postList.appendChild(li);
 });
@@ -142,7 +147,9 @@ newPostForm.addEventListener("submit", (e) => {
 
   const newPost = currentUser.addPost(postText);
   const li = renderPost(newPost, currentUser.posts.length - 1);
+  setupRenderedPost(newPost, li);
   postList.prepend(li);
+
   postInput.value = "";
 });
 
@@ -151,10 +158,9 @@ postList.addEventListener("click", function (e) {
   if (!li) return;
   const id = Number(li.dataset.postId);
   const post = currentUser.posts[id];
-
-  if (e.target.closest(".like-btn")) {
+  const likeBtn = e.target.closest(".like-btn");
+  if (likeBtn) {
     post.toggleLike(currentUser);
-    const likeBtn = li.querySelector(".like-btn");
     const likedText = li.querySelector(".liked-by-text");
 
     if (post.isLikedBy(currentUser)) {
@@ -203,5 +209,57 @@ postList.addEventListener("click", function (e) {
     const commentCount = li.querySelector(".comment-count");
     const count = post.comments.length;
     commentCount.textContent = `${count} comment${count === 1 ? "" : "s"}`;
+  }
+
+  if (e.target.closest(".edit-post-btn")) {
+    post.toggleEditMode();
+
+    const postTextEl = li.querySelector(".post-text");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = post.text;
+    input.className = "edit-input";
+
+    postTextEl.replaceWith(input);
+
+    const editBtn = e.target.closest(".edit-post-btn");
+    editBtn.textContent = "finish";
+    editBtn.classList.remove("edit-post-btn");
+    editBtn.classList.add("finish-edit-btn");
+    return;
+  }
+
+  if (e.target.closest(".finish-edit-btn")) {
+    post.toggleEditMode();
+
+    const input = li.querySelector(".edit-input");
+    const newText = input.value.trim();
+
+    if (newText !== "") {
+      post.text = newText;
+    }
+
+    const newPostText = document.createElement("h2");
+    newPostText.className = "post-text";
+    newPostText.textContent = post.text;
+
+    input.replaceWith(newPostText);
+
+    const finishBtn = e.target.closest(".finish-edit-btn");
+    finishBtn.textContent = "Edit";
+    finishBtn.classList.remove("finish-edit-btn");
+    finishBtn.classList.add("edit-post-btn");
+    return;
+  }
+
+  if (e.target.closest(".delete-post-btn")) {
+    currentUser.posts.splice(id, 1);
+
+    li.remove();
+
+    postList.querySelectorAll("li").forEach((li, i) => {
+      li.dataset.postId = i;
+    });
+    return;
   }
 });

@@ -356,3 +356,25 @@ li {
 .delete-post-btn {
   background-color: rgb(135, 18, 47);
 }
+
+.edit-input {
+  width: 100%;
+  margin-bottom: 5rem;
+  font-size: 25rem;
+  padding-left: 5rem;
+  padding-bottom: 3rem;
+  border-radius: 5rem;
+  border: none;
+  padding-top: 3rem;
+  background-color: rgb(222, 211, 242);
+}
+
+.finish-edit-btn {
+  color: white;
+  background-color: rgb(90, 18, 135);
+  border-radius: 5rem;
+  font-size: 14rem;
+  padding: 4rem 9rem 4rem 9rem;
+  font-weight: bold;
+  margin-bottom: 30rem;
+}

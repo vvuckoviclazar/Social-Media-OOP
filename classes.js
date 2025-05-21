@@ -1,3 +1,5 @@
+"use strict";
+
 export class Like {
   constructor(user) {
     this.user = user;
@@ -17,6 +19,7 @@ export class Post {
     this.text = text;
     this.likes = [];
     this.comments = [];
+    this.isBeingEdited = false;
   }
 
   toggleLike(user) {
@@ -34,6 +37,10 @@ export class Post {
 
   addComment(user, text) {
     this.comments.push(new Comment(user, text));
+  }
+
+  toggleEditMode() {
+    this.isBeingEdited = !this.isBeingEdited;
   }
 }
 
