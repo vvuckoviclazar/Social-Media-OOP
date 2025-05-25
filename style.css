@@ -338,15 +338,32 @@ li {
   gap: 5rem;
 }
 
+.right-mini-div {
+  display: none;
+  position: absolute;
+}
+
+.right-mini-div.show {
+  display: block;
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+  background-color: rgb(213, 200, 238);
+  border: 1rem solid rgb(194, 177, 226);
+  padding: 5rem 10rem 5rem 10rem;
+  top: -20%;
+  right: 105%;
+  border-radius: 5rem;
+}
+
 .delete-post-btn,
 .edit-post-btn {
   color: white;
-
   border-radius: 5rem;
   font-size: 14rem;
   padding: 4rem 9rem 4rem 9rem;
   font-weight: bold;
-  margin-bottom: 30rem;
+  width: 100%;
 }
 
 .edit-post-btn {
@@ -359,7 +376,6 @@ li {
 
 .edit-input {
   width: 100%;
-  margin-bottom: 5rem;
   font-size: 25rem;
   padding-left: 5rem;
   padding-bottom: 3rem;
@@ -376,5 +392,44 @@ li {
   font-size: 14rem;
   padding: 4rem 9rem 4rem 9rem;
   font-weight: bold;
-  margin-bottom: 30rem;
+}
+
+.size-6 {
+  width: 26rem;
+}
+
+.open-div {
+  margin-bottom: 22rem;
+  position: relative;
+}
+
+.like-comment,
+.delete-comment {
+  font-size: 13rem;
+  border: none;
+  background-color: transparent;
+  font-weight: bold;
+}
+
+.like-comment:hover,
+.delete-comment:hover {
+  text-decoration: underline 2rem;
+}
+
+.like-delete-comment {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  padding-left: 10rem;
+  padding-right: 10rem;
+}
+
+.liked-comment {
+  color: rgb(0, 136, 255);
+}
+
+.dot-btn {
+  border: none;
+  background-color: transparent;
 }

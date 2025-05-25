@@ -10,6 +10,20 @@ export class Comment {
   constructor(user, text) {
     this.user = user;
     this.text = text;
+    this.commentLikes = [];
+  }
+
+  toggleLike(user) {
+    const existing = this.commentLikes.find((likeUser) => likeUser === user);
+    if (existing) {
+      this.commentLikes = this.commentLikes.filter((u) => u !== user);
+    } else {
+      this.commentLikes.push(user);
+    }
+  }
+
+  isLikedBy(user) {
+    return this.commentLikes.includes(user);
   }
 }
 
