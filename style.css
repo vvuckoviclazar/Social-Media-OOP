@@ -307,6 +307,7 @@ li {
   display: flex;
   align-items: baseline;
   flex-direction: column;
+  position: relative;
 }
 
 .comment-text {
@@ -398,6 +399,10 @@ li {
   width: 26rem;
 }
 
+.size-7 {
+  width: 16rem;
+}
+
 .open-div {
   margin-bottom: 22rem;
   position: relative;
@@ -432,4 +437,18 @@ li {
 .dot-btn {
   border: none;
   background-color: transparent;
+}
+
+.dot-com-btn {
+  position: absolute;
+  color: black;
+  right: 0%;
+  font-size: 24rem;
+  top: -13%;
+  border: none;
+  background-color: transparent;
+}
+
+.dot-com-btn:hover {
+  font-size: 27rem;
 }

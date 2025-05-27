@@ -42,10 +42,11 @@ function setupRenderedPost(post, li) {
     newComment.innerHTML = `
       <div class="comment-user">
         <img class="post-img" src="${comment.user.picture}" />
-        <div class="comment-style">
+         <div class="comment-style">
+         <button class="dot-com-btn">...</button>
           <span class="comment-name">${comment.user.name}</span>
           <span class="comment-text">${comment.text}</span>
-          <div class="like-delete-comment">
+        <div class="like-delete-comment">
             <button class="like-comment">I like it.</button>
             <button class="delete-comment">Delete comment.</button>
           </div>
@@ -216,6 +217,7 @@ postList.addEventListener("click", function (e) {
       <div class="comment-user">
         <img class="post-img" src="${currentUser.picture}" />
         <div class="comment-style">
+        <button class="dot-com-btn">...</button>
           <span class="comment-name">${currentUser.name}</span>
           <span class="comment-text">${text}</span>
           <div class="like-delete-comment">
