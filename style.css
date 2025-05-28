@@ -308,6 +308,7 @@ li {
   align-items: baseline;
   flex-direction: column;
   position: relative;
+  width: 100%;
 }
 
 .comment-text {
@@ -316,6 +317,7 @@ li {
   background-color: rgb(222, 211, 242);
   padding: 4rem 12rem 4rem 12rem;
   border-radius: 14rem;
+  width: 100%;
 }
 
 .single-comment {
@@ -416,6 +418,10 @@ li {
   font-weight: bold;
 }
 
+.like-comment {
+  margin-right: 3rem;
+}
+
 .like-comment:hover,
 .delete-comment:hover {
   text-decoration: underline 2rem;
@@ -439,16 +445,52 @@ li {
   background-color: transparent;
 }
 
-.dot-com-btn {
+.edit-com-btn {
   position: absolute;
   color: black;
   right: 0%;
-  font-size: 24rem;
-  top: -13%;
+  font-size: 10rem;
+  top: 0%;
   border: none;
   background-color: transparent;
 }
 
-.dot-com-btn:hover {
-  font-size: 27rem;
+.size-6 {
+  width: 18rem;
+}
+
+.size-6:hover {
+  background-color: rgb(228, 228, 228);
+  border-radius: 5rem;
+  border: 1rem solid black;
+}
+
+.like-com-div {
+  display: flex;
+  align-items: center;
+}
+
+.likes-number {
+  font-size: 13rem;
+  margin-right: 2rem;
+}
+
+.size-8 {
+  width: 13rem;
+}
+
+.edit-comment-input {
+  width: 100%;
+  font-size: 18rem;
+  padding-left: 10rem;
+  padding-bottom: 3rem;
+  border-radius: 5rem;
+  border: none;
+  padding-top: 3rem;
+  background-color: rgb(222, 211, 242);
+  border-radius: 48rem;
+}
+
+.edit-com-btn.editing svg {
+  stroke: #3b82f6;
 }
